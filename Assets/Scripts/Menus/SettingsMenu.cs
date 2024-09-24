@@ -9,6 +9,7 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] GameObject fps_controller;
     [SerializeField] Toggle fps_toggle;
     [SerializeField] Toggle fullscreen;
+    [SerializeField] Slider max_fps;
 
     private Updater updater;
     
@@ -22,6 +23,7 @@ public class SettingsMenu : MonoBehaviour
     {
         updater = gameObject.GetComponent<Updater>();
         menu_controller = gameObject.GetComponent<MenuController>();
+        Application.targetFrameRate = 100;
 
         prev_menu_state = menu_controller.getMenuState();
         
@@ -40,6 +42,11 @@ public class SettingsMenu : MonoBehaviour
         fullscreen.onValueChanged.AddListener(delegate
         {
             Screen.fullScreen = fullscreen.isOn;
+        });
+        
+        max_fps.onValueChanged.AddListener(delegate
+        {
+            Application.targetFrameRate = (int)max_fps.value;
         });
     }
 

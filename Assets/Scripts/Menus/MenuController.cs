@@ -5,8 +5,8 @@ using UnityEngine;
 public class MenuController : MonoBehaviour
 {
 
-    [SerializeField] GameObject play_menu;
-    [SerializeField] GameObject death_menu;
+    [SerializeField] public GameObject play_menu;
+    [SerializeField] public GameObject death_menu;
     [SerializeField] GameObject upgrade_menu;
     [SerializeField] GameObject settings_menu;
     [SerializeField] GameObject menu_light;

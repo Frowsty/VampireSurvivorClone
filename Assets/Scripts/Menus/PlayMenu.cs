@@ -8,17 +8,13 @@ using UnityEngine.SceneManagement;
 public class PlayMenu : MonoBehaviour
 {
     [SerializeField] GameObject main_menu_controller;
-    [SerializeField] GameObject play_button;
-    [SerializeField] GameObject exit_button;
-    [SerializeField] GameObject setting_button;
+    [SerializeField] GameObject panel;
     
     private MenuController menu_controller;
 
     private Player player;
 
-    private Vector3 play_original_pos;
-    private Vector3 exit_original_pos;
-    private Vector3 setting_original_pos;
+    private float original_position;
     
     // Start is called before the first frame update
     void Start()
@@ -26,9 +22,7 @@ public class PlayMenu : MonoBehaviour
         menu_controller = gameObject.GetComponent<MenuController>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
-        play_original_pos = play_button.transform.position;
-        exit_original_pos = exit_button.transform.position;
-        setting_original_pos = setting_button.transform.position;
+        original_position = panel.transform.position.y;
         
         resetPositions();
     }
@@ -36,15 +30,12 @@ public class PlayMenu : MonoBehaviour
     // Update is called once per frame
     public void UpdateMenu()
     {
-        // y position is being animated
-        play_button.transform.position = new Vector3(play_original_pos.x, verticalMove(play_button.transform.position.y, play_original_pos.y), play_original_pos.z);
-        setting_button.transform.position = new Vector3(setting_original_pos.x, verticalMove(setting_button.transform.position.y, setting_original_pos.y), setting_original_pos.z);
-        exit_button.transform.position = new Vector3(exit_original_pos.x, verticalMove(exit_button.transform.position.y, exit_original_pos.y), exit_original_pos.z);
+        panel.transform.position = new Vector3(panel.transform.position.x, verticalMove(panel.transform.position.y, original_position), panel.transform.position.z);
     }
 
     private float verticalMove(float current_y, float original_y)
     {
-        if (current_y < original_y)
+        if (original_y - current_y > 1)
             current_y += (10f * Mathf.Abs(original_y - current_y)) * Time.deltaTime;
         else
             return original_y;
@@ -63,9 +54,7 @@ public class PlayMenu : MonoBehaviour
 
     public void resetPositions()
     {
-        play_button.transform.position = new Vector3(play_original_pos.x, -100, play_original_pos.z);
-        setting_button.transform.position = new Vector3(setting_original_pos.x, -200, setting_original_pos.z);
-        exit_button.transform.position = new Vector3(exit_original_pos.x, -300, exit_original_pos.z);
+        panel.transform.position = new Vector3(panel.transform.position.x, original_position * 2 * -1, panel.transform.position.z);
     }
 
     public void enterSettings() => menu_controller.setMenuState(MenuController.MenuState.SettingsMenu);
