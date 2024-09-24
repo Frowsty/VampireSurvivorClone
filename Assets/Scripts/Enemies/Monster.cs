@@ -27,7 +27,6 @@ public class Monster : MonoBehaviour
     public int current_health = 100;
     private int damage = 3;
     private float move_speed = CONST_MOVE_SPEED;
-    private float dodge_boost = CONST_MOVE_SPEED_WITH_BOOST;
 
     private bool evading = false;
     private bool did_evade = false;

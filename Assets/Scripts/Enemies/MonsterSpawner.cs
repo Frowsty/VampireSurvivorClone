@@ -33,8 +33,8 @@ public class MonsterSpawner : MonoBehaviour
     {
         Monster monster = Instantiate(boss_prefab, pointOutsideScreen(), Quaternion.identity);
         
-        monster.GetComponent<Monster>().setPool(boss_pool);
-        monster.GetComponent<Monster>().setBossState(true);
+        monster.setPool(boss_pool);
+        monster.setBossState(true);
 
         return monster;
     }
@@ -63,7 +63,7 @@ public class MonsterSpawner : MonoBehaviour
         // create new instance
         Monster monster = Instantiate(monster_prefab, pointOutsideScreen(), Quaternion.identity);
         
-        monster.GetComponent<Monster>().setPool(object_pool);
+        monster.setPool(object_pool);
 
         return monster;
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,10 +8,12 @@ using UnityEngine.Pool;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] DamagePopup damage_prefab;
+    [SerializeField] Sprite[] bullet_sprites;
     
     private Weapon weapon;
     private Player player;
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
     
     private float bullet_speed = 6.0f;
     private float travel_time;
@@ -20,13 +23,19 @@ public class Bullet : MonoBehaviour
     private ObjectPool<Bullet> bullet_pool;
 
     public bool is_disabled = false;
-    
+
+    private void Awake()
+    {
+        weapon = GameObject.Find("Weapon").GetComponent<Weapon>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        weapon = GameObject.Find("Weapon").GetComponent<Weapon>();
-        player = GameObject.Find("Player").GetComponent<Player>();
-        rb = GetComponent<Rigidbody2D>();
+        
     }
 
     // Update is called once per frame
@@ -51,6 +60,18 @@ public class Bullet : MonoBehaviour
     }
     
     public void setPool(ObjectPool<Bullet> pool) => bullet_pool = pool;
+
+    public void updateSprite()
+    {
+        int player_level = player.getLevel();
+        
+        if (player_level >= 1 && player_level < 5)
+            sr.sprite = bullet_sprites[0];
+        else if (player_level >= 5 && player_level < 10)
+            sr.sprite = bullet_sprites[1];
+        else
+            sr.sprite = bullet_sprites[2];
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {

@@ -22,12 +22,10 @@ public class Weapon : MonoBehaviour
         LAZER_BEAM
     }
 
-    [SerializeField] Bullet[] bullet_prefabs;
+    [SerializeField] Bullet bullet_prefab;
     [SerializeField] Player player;
     
-    private ObjectPool<Bullet> pistol_pool;
-    private ObjectPool<Bullet> rifle_pool;
-    private ObjectPool<Bullet> machine_pool;
+    private ObjectPool<Bullet> bullet_pool;
 
     private WeaponType current_weapon;
     private PowerUp current_powerup;
@@ -38,42 +36,16 @@ public class Weapon : MonoBehaviour
     private float fire_rate = 0.25f;
     private float powerup_timer = 0;
     private float powerup_duration = 30f;
-
-    private void Awake()
-    {
-        pistol_pool = new ObjectPool<Bullet>(createBulletPistol, onTakeBullet, onReturnBullet, onDestroyBullet, true, 50, 150);
-        rifle_pool = new ObjectPool<Bullet>(createBulletRifle, onTakeBullet, onReturnBullet, onDestroyBullet, true, 50, 200);
-        machine_pool = new ObjectPool<Bullet>(createBulletMachine, onTakeBullet, onReturnBullet, onDestroyBullet, true, 100, 300);
-    }
     
-    private Bullet createBulletPistol()
+    private Bullet createBullet()
     {
         // create new instance
-        Bullet bullet = Instantiate(bullet_prefabs[0], transform.position, transform.rotation);
+        Bullet bullet = Instantiate(bullet_prefab, transform.position, transform.rotation);
         
-        bullet.GetComponent<Bullet>().setPool(pistol_pool);
+        bullet.setPool(bullet_pool);
+        bullet.updateSprite();
 
-        return bullet.GetComponent<Bullet>();;
-    }
-    
-    private Bullet createBulletRifle()
-    {
-        // create new instance
-        Bullet bullet = Instantiate(bullet_prefabs[1], transform.position, transform.rotation);
-        
-        bullet.GetComponent<Bullet>().setPool(rifle_pool);
-
-        return bullet.GetComponent<Bullet>();;
-    }
-    
-    private Bullet createBulletMachine()
-    {
-        // create new instance
-        Bullet bullet = Instantiate(bullet_prefabs[2], transform.position, transform.rotation);
-        
-        bullet.GetComponent<Bullet>().setPool(machine_pool);
-
-        return bullet.GetComponent<Bullet>();
+        return bullet;
     }
 
     private void onTakeBullet(Bullet bullet)
@@ -82,6 +54,7 @@ public class Weapon : MonoBehaviour
         bullet.transform.rotation = transform.rotation;
         bullet.is_disabled = false;
         
+        bullet.updateSprite();
         bullet.gameObject.SetActive(true);
     }
 
@@ -97,11 +70,10 @@ public class Weapon : MonoBehaviour
     
     void Start()
     {
+        bullet_pool = new ObjectPool<Bullet>(createBullet, onTakeBullet, onReturnBullet, onDestroyBullet, true, 300, 500);
         time_since_shot = Time.time;
-        if (bullet_prefabs[0] == null)
-            Debug.Log("No bullet prefab assigned to weapon");
         current_weapon = WeaponType.PISTOL;
-        current_powerup = PowerUp.NONE;
+        current_powerup = PowerUp.NONE;;
     }
 
     // Update is called once per frame
@@ -126,53 +98,20 @@ public class Weapon : MonoBehaviour
             Bullet temp;
             switch (current_powerup)
             {
+                case PowerUp.LAZER_BEAM:
                 case PowerUp.NONE:
-                    if ((int)current_weapon == 0)
-                        temp = pistol_pool.Get();
-                    else if ((int)current_weapon == 1)
-                        temp = rifle_pool.Get();
-                    else
-                        temp = machine_pool.Get();
-
-                    if (temp)
-                    {
-                        temp.transform.position = transform.position;
-                        temp.transform.rotation = transform.rotation;
-                    }
+                    bullet_pool.Get();
                     break;
                 case PowerUp.TRI_SHOT:
                     Vector3 rot = transform.rotation.eulerAngles;
                     rot.z -= 10f;
                     for (int i = 0; i < 3; i++)
                     {
-                        if ((int)current_weapon == 0)
-                            temp = pistol_pool.Get();
-                        else if ((int)current_weapon == 1)
-                            temp = rifle_pool.Get();
-                        else
-                            temp = machine_pool.Get();
-
+                        temp = bullet_pool.Get();
                         if (temp)
-                        {
-                            temp.transform.position = transform.position;
                             temp.transform.rotation = Quaternion.Euler(rot.x, rot.y, rot.z);
-                        }
 
                         rot.z += 10f;
-                    }
-                    break;
-                case PowerUp.LAZER_BEAM:
-                    if ((int)current_weapon == 0)
-                        temp = pistol_pool.Get();
-                    else if ((int)current_weapon == 1)
-                        temp = rifle_pool.Get();
-                    else
-                        temp = machine_pool.Get();
-
-                    if (temp)
-                    {
-                        temp.transform.position = transform.position;
-                        temp.transform.rotation = transform.rotation;
                     }
                     break;
             }
@@ -220,12 +159,12 @@ public class Weapon : MonoBehaviour
     public void upgradeWeapon(int level)
     {
         if (level >= 5 && level < 10)
-            current_weapon = WeaponType.RIFLE;
+            current_weapon = WeaponType.RIFLE; // pistol uses standard bullet sprite already set as default during setup
         else if (level >= 10)
             current_weapon = WeaponType.MACHINE_GUN;
         else
             current_weapon = WeaponType.PISTOL;
-        
+
         if (current_powerup == PowerUp.NONE) 
             fire_rate = getWeaponFireRate();
     }
