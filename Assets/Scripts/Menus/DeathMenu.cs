@@ -1,0 +1,71 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class DeathMenu: MonoBehaviour
+{
+    [SerializeField] GameObject death_menu_controller;
+    [SerializeField] GameObject menu_button;
+    [SerializeField] GameObject exit_button;
+    [SerializeField] GameObject setting_button;
+    [SerializeField] GameObject game_over_text;
+
+    private Player player;
+    private MenuController menu_controller;
+
+    private Vector3 menu_original_pos;
+    private Vector3 exit_original_pos;
+    private Vector3 setting_original_pos;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        menu_controller = gameObject.GetComponent<MenuController>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+  
+        menu_original_pos = menu_button.transform.position;
+        exit_original_pos = exit_button.transform.position;
+        setting_original_pos = setting_button.transform.position;
+    }
+
+    // Update is called once per frame
+    public void UpdateMenu()
+    {
+        // y position is being animated
+        setting_button.transform.position = new Vector3(setting_original_pos.x, verticalMove(setting_button.transform.position.y, setting_original_pos.y), setting_original_pos.z);
+        exit_button.transform.position = new Vector3(exit_original_pos.x, verticalMove(exit_button.transform.position.y, exit_original_pos.y), exit_original_pos.z);
+        menu_button.transform.position = new Vector3(menu_original_pos.x, verticalMove(menu_button.transform.position.y, menu_original_pos.y), menu_original_pos.z);
+    }
+
+    private float verticalMove(float current_y, float original_y)
+    {
+        if (current_y < original_y)
+            current_y += (10f * Mathf.Abs(original_y - current_y)) * Time.deltaTime;
+        else
+            return original_y;
+
+        return current_y;
+    }
+
+    public void mainMenu() => SceneManager.LoadScene(0);
+
+    public void enterSettings() => menu_controller.setMenuState(MenuController.MenuState.SettingsMenu);
+
+    public void resetPositions()
+    {
+        setting_button.transform.position = new Vector3(setting_original_pos.x, -200, setting_original_pos.z);
+        exit_button.transform.position = new Vector3(exit_original_pos.x, -300, exit_original_pos.z);
+        menu_button.transform.position = new Vector3(menu_original_pos.x, -100, menu_original_pos.z);
+    }
+
+    public void exitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        Application.Quit();
+    }
+}
