@@ -47,7 +47,7 @@ public class PlayMenu : MonoBehaviour
     {
         player.enableLights();
         menu_controller.allow_bind = true;
-        main_menu_controller.SetActive(false);
+        //main_menu_controller.SetActive(false);
         player.game_started = true;
         menu_controller.show_menu = false;
     }

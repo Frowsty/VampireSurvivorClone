@@ -12,6 +12,7 @@ public class UpgradeMenu : MonoBehaviour
     private int attraction = 0;
     private int fire_rate = 0;
     private int damage = 0;
+    private int health_regen = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,7 @@ public class UpgradeMenu : MonoBehaviour
         player.setAttractionPoints(attraction);
         player.setFireRatePoints(fire_rate);
         player.setDamagePoints(damage);
+        player.setHealthRegen(health_regen);
         points_text.SetText(player.getUpgradePoints().ToString());
     }
 
@@ -31,6 +33,26 @@ public class UpgradeMenu : MonoBehaviour
     {
         upgrade_menu_controller.SetActive(false);
         player.game_started = true;
+    }
+
+    public void incrementHealthRegen(TMPro.TextMeshProUGUI value)
+    {
+        if (player.getUpgradePoints() == 0 || health_regen >= 20)
+            return;
+        health_regen++;
+        value.SetText(health_regen.ToString());
+        
+        player.decrementUpgradePoints();
+    }
+    
+    public void decrementHealthRegen(TMPro.TextMeshProUGUI value)
+    {
+        if (health_regen == 0)
+            return;
+        health_regen--;
+        value.SetText(health_regen.ToString());
+        
+        player.incrementUpgradePoints();
     }
 
     public void incrementAttraction(TMPro.TextMeshProUGUI value)

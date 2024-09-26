@@ -61,6 +61,7 @@
     <Compile Include="Assets\Scripts\Menus\UpgradeMenu.cs" />
     <Compile Include="Assets\Scripts\Player\Healthbar.cs" />
     <Compile Include="Assets\Scripts\Menus\MenuController.cs" />
+    <Compile Include="Assets\Scripts\TilemapManager.cs" />
     <Compile Include="Assets\Scripts\Player\ExpBar.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />

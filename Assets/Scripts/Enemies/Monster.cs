@@ -110,6 +110,12 @@ public class Monster : MonoBehaviour
             onDeath();
     }
 
+    private void resetStates()
+    {
+        did_evade = false;
+        evading = false;
+    }
+
     private void onDeath()
     {
         // particle system when monster dies
@@ -123,8 +129,7 @@ public class Monster : MonoBehaviour
         monster_pool.Release(this);
         monster_spawner.decreaseSpawnedMonsters();
 
-        did_evade = false;
-        evading = false;
+        resetStates();
         
         if (Random.Range(0f, 100f) < 0.5f) // 0.5% chance to spawn a powerup drop
             Instantiate(powerup_prefab, transform.position, Quaternion.identity);

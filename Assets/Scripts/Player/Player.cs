@@ -21,7 +21,11 @@ public class Player : MonoBehaviour
     public bool game_started = false;
     private int max_health = 100;
     public int current_health;
-    private float move_speed = 2.0f;
+    
+    
+    private float move_speed = 1.5f;
+    private Vector2 next_position = Vector2.zero;
+    
     private int player_level = 1;
     private int last_player_level = 0;
     private int experience = 0;
@@ -31,6 +35,9 @@ public class Player : MonoBehaviour
     private int attraction_points = 0;
     private int fire_rate_points = 0;
     private int damage_points = 0;
+    private int regen_points = 0;
+
+    private float internal_regen_health = 0f;
 
     private bool update_fire_rate = false;
 
@@ -41,6 +48,8 @@ public class Player : MonoBehaviour
         health_bar.setMaxHealth(max_health);
         gameObject.GetComponent<SpriteRenderer>().sprite = character_sprites[0];
         rb = GetComponent<Rigidbody2D>();
+
+        next_position = transform.position;
     }
 
     // Update is called once per frame
@@ -53,11 +62,15 @@ public class Player : MonoBehaviour
             menu_controller.setMenuState(MenuController.MenuState.PlayMenu);
             menu_controller.toggleMenu(!game_started);
         }
+    }
 
+    private void FixedUpdate()
+    {
         if (game_started)
+        {
+            regen_health();
             movePlayer();
-        else
-            rb.velocity = Vector2.zero;
+        }
     }
 
     private void movePlayer()
@@ -69,6 +82,7 @@ public class Player : MonoBehaviour
             game_started = false;
         }
 
+        // get next position to move towards when player presses LMB
         if (Input.GetMouseButton(0))
         {
             Vector3 target_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -77,17 +91,33 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, look_angle);
 
             target_pos.z = 0;
-            rb.velocity = transform.right * move_speed;
+
+            next_position = target_pos;
         }
-        else
-            rb.velocity = Vector2.zero;
         
+        // while player is holding RMB allow them to look around / rotate their player towards the mouse pointer
         if (Input.GetMouseButton(1))
         {
             Vector3 target_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 rotation = target_pos - transform.position;
             float look_angle = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, look_angle);
+        }
+        
+        rb.MovePosition(Vector2.MoveTowards(rb.position, next_position, move_speed * Time.deltaTime));
+    }
+
+    public void regen_health()
+    {
+        if (current_health == max_health || regen_points == 0)
+            return;
+        
+        internal_regen_health += (regen_points * 0.1f) * Time.deltaTime;
+
+        if (internal_regen_health >= 1)
+        {
+            health_bar.setHealth(current_health++);
+            internal_regen_health = 0;
         }
     }
 
@@ -138,6 +168,9 @@ public class Player : MonoBehaviour
 
     public int getFireRatePoints() => fire_rate_points;
     public void setFireRatePoints(int points) => fire_rate_points = points;
+    
+    public int getHealthRegenPoints() => regen_points;
+    public void setHealthRegen(int points) => regen_points = points;
 
     public int getDamagePoints() => damage_points;
     public void setDamagePoints(int points) => damage_points = points;
