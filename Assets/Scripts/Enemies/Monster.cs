@@ -139,7 +139,7 @@ public class Monster : MonoBehaviour
 
         ExpBallMovement exp_ball = monster_spawner.exp_ball_manager.getPool().Get();
         exp_ball.transform.position = new Vector3(transform.position.x, transform.position.y, -1);
-        //Instantiate(exp_orb, new Vector3(transform.position.x, transform.position.y, -1), Quaternion.identity);
+        exp_ball.setPool(monster_spawner.exp_ball_manager.getPool());
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

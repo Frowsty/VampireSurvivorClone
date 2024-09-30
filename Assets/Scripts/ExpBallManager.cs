@@ -29,6 +29,7 @@ public class ExpBallManager : MonoBehaviour
     private void onReturnExp(ExpBallMovement exp)
     {
         exp.gameObject.SetActive(false);
+        exp.resetTimer();
     }
 
     private void onDestroyExp(ExpBallMovement exp)
