@@ -12,7 +12,7 @@ public class Monster : MonoBehaviour
 {
     [SerializeField] ParticleSystem explosion_prefab;
     [SerializeField] GameObject powerup_prefab;
-    [SerializeField] GameObject exp_orb;
+    //[SerializeField] GameObject exp_orb;
     
     private const float CONST_MOVE_SPEED = 0.75f;
     private const float CONST_MOVE_SPEED_WITH_BOOST = 2f;
@@ -128,13 +128,18 @@ public class Monster : MonoBehaviour
 
         monster_pool.Release(this);
         monster_spawner.decreaseSpawnedMonsters();
+        
+        player.increaseScore(1);
+        player.updateScoreText();
 
         resetStates();
         
         if (Random.Range(0f, 100f) < 0.5f) // 0.5% chance to spawn a powerup drop
             Instantiate(powerup_prefab, transform.position, Quaternion.identity);
-        
-        Instantiate(exp_orb, transform.position, Quaternion.identity);
+
+        ExpBallMovement exp_ball = monster_spawner.exp_ball_manager.getPool().Get();
+        exp_ball.transform.position = new Vector3(transform.position.x, transform.position.y, -1);
+        //Instantiate(exp_orb, new Vector3(transform.position.x, transform.position.y, -1), Quaternion.identity);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -15,6 +16,9 @@ public class Player : MonoBehaviour
     [SerializeField] Weapon weapon;
     [SerializeField] GameObject flashlight;
     [SerializeField] GameObject spotlight;
+    [SerializeField] GameObject score_text;
+    [SerializeField] TextMeshProUGUI score_tex_value;
+    [SerializeField] ExpBallManager exp_ball_manager;
 
     private Rigidbody2D rb;
     
@@ -41,6 +45,8 @@ public class Player : MonoBehaviour
 
     private bool update_fire_rate = false;
 
+    private int score = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +55,11 @@ public class Player : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().sprite = character_sprites[0];
         rb = GetComponent<Rigidbody2D>();
 
+        resetScore();
+        
+        score_tex_value.SetText("0");
+        score_text.SetActive(false);
+        
         next_position = transform.position;
     }
 
@@ -68,20 +79,32 @@ public class Player : MonoBehaviour
     {
         if (game_started)
         {
+            if (!score_text.activeSelf)
+                score_text.SetActive(true);
+            
             regen_health();
-            movePlayer();
+            
+            if (current_health <= 0)
+            {
+                if (score > PlayerPrefs.GetInt("highscore"))
+                {
+                    PlayerPrefs.SetInt("highscore", score);
+                    PlayerPrefs.Save();
+                }
+                
+                score_text.SetActive(false);
+
+                menu_controller.setMenuState(MenuController.MenuState.DeathMenu); // Menu state 1 = death menu
+                menu_controller.toggleMenu(true);
+                game_started = false;
+            }
+            else
+                movePlayer();
         }
     }
 
     private void movePlayer()
     {
-        if (current_health <= 0)
-        {
-            menu_controller.setMenuState(MenuController.MenuState.DeathMenu); // Menu state 1 = death menu
-            menu_controller.toggleMenu(true);
-            game_started = false;
-        }
-
         // get next position to move towards when player presses LMB
         if (Input.GetMouseButton(0))
         {
@@ -90,7 +113,7 @@ public class Player : MonoBehaviour
             float look_angle = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, look_angle);
 
-            target_pos.z = 0;
+            target_pos.z = -3;
 
             next_position = target_pos;
         }
@@ -156,6 +179,9 @@ public class Player : MonoBehaviour
         else
             experience += is_boss ? 75 : 25;
         
+        increaseScore(is_boss ? 75 : 25);
+        updateScoreText();
+        
         exp_bar.setExp(experience);
     }
 
@@ -169,7 +195,7 @@ public class Player : MonoBehaviour
     public int getFireRatePoints() => fire_rate_points;
     public void setFireRatePoints(int points) => fire_rate_points = points;
     
-    public int getHealthRegenPoints() => regen_points;
+    public int getHealthRegenPoints() => regen_points; // not used but if it's ever needed we have it here
     public void setHealthRegen(int points) => regen_points = points;
 
     public int getDamagePoints() => damage_points;
@@ -208,6 +234,16 @@ public class Player : MonoBehaviour
         flashlight.SetActive(true);
         spotlight.SetActive(true);
     }
+
+    public int getScore() => score;
+    
+    public void increaseScore(int points) => score += points;
+
+    public void resetScore() => score = 0;
+    
+    public void updateScoreText() => score_tex_value.SetText(score.ToString());
+    
+    public void resetScoreText() => score_tex_value.SetText("");
     
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -224,12 +260,12 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("ExpOrb"))
         {
             increaseExp(false);
-            Destroy(collision.gameObject);
+            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpBallMovement>());
         }
         if (collision.CompareTag("ExpOrbBoss"))
         {
             increaseExp(true);
-            Destroy(collision.gameObject);
+            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpBallMovement>());
         }
     }
 
@@ -246,12 +282,12 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("ExpOrb"))
         {
             increaseExp(false);
-            Destroy(collision.gameObject);
+            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpBallMovement>());
         }
         if (collision.CompareTag("ExpOrbBoss"))
         {
             increaseExp(true);
-            Destroy(collision.gameObject);
+            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpBallMovement>());
         }
     }
 }

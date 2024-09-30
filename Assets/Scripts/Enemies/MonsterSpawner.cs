@@ -9,6 +9,7 @@ public class MonsterSpawner : MonoBehaviour
 {
     [SerializeField] Monster monster_prefab;
     [SerializeField] Monster boss_prefab;
+    public ExpBallManager exp_ball_manager;
 
     private ObjectPool<Monster> object_pool;
     private ObjectPool<Monster> boss_pool;
@@ -109,7 +110,7 @@ public class MonsterSpawner : MonoBehaviour
         Vector3 random_point = new Vector3(x, y);
         Vector3 world_point = Camera.main.ViewportToWorldPoint(random_point);
 
-        world_point.z = 0;
+        world_point.z = -2;
         
         return world_point;
     }
@@ -131,12 +132,14 @@ public class MonsterSpawner : MonoBehaviour
         else
             did_spawn = true;
 
-        if (spawn_timer >= 35f && did_spawn)
+        if (spawn_timer >= get_spawn_time_limit() && did_spawn)
             did_spawn = false;
         
         if (did_spawn)
             spawn_timer += Time.deltaTime;
     }
+    
+    float get_spawn_time_limit() => (35f - player.getLevel()) > 5f ? 35f - player.getLevel() : 5f;
     
     public void increaseSpawnedMonsters() => spawned_monsters += 1;
 

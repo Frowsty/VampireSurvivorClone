@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,12 +10,15 @@ public class DeathMenu: MonoBehaviour
 {
     [SerializeField] GameObject death_menu_controller;
     [SerializeField] GameObject panel;
+    [SerializeField] TextMeshProUGUI score_text;
+    [SerializeField] TextMeshProUGUI highscore_text;
 
     private Player player;
     private MenuController menu_controller;
 
     private float original_position;
-
+    
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +33,9 @@ public class DeathMenu: MonoBehaviour
     {
         // y position is being animated
         panel.transform.position = new Vector3(panel.transform.position.x, verticalMove(panel.transform.position.y, original_position), panel.transform.position.z);
+
+        score_text.SetText(player.getScore().ToString());
+        highscore_text.SetText(PlayerPrefs.GetInt("highscore").ToString());
     }
 
     private float verticalMove(float current_y, float original_y)
