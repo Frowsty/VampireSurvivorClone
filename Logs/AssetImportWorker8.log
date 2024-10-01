@@ -3979,3 +3979,21 @@ Start importing Assets/Resources/StrongMonster.prefab using Guid(79e0f605b5e42f7
  -> (artifact id: '700432a87209c27124b91e79babe9ad5') in 0.000456 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 15151.872293 seconds.
+  path: Assets/Resources/Boss.prefab
+  artifactKey: Guid(413839bc4070a1e46b2d7d7a8c589fc4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Boss.prefab using Guid(413839bc4070a1e46b2d7d7a8c589fc4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 24 workers.
+ -> (artifact id: '29f3dc62f2bb41f628089784949efe07') in 0.006542 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.000242 seconds.
+  path: Assets/Resources/StrongMonster.prefab
+  artifactKey: Guid(79e0f605b5e42f74b921be54ef99a654) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StrongMonster.prefab using Guid(79e0f605b5e42f74b921be54ef99a654) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 24 workers.
+ -> (artifact id: '700432a87209c27124b91e79babe9ad5') in 0.002028 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0

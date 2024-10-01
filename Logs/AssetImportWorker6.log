@@ -7246,3 +7246,21 @@ Start importing Assets/Resources/Monster.prefab using Guid(5ddbb946a49434849bfeb
  -> (artifact id: '6df66ac4fd7b3dfc10097e7ec40a447c') in 0.000472 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 15151.872654 seconds.
+  path: Assets/Resources/Enemy Tag.prefab
+  artifactKey: Guid(da9681bf3ecea3042b6eb8cb5d95fe99) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Enemy Tag.prefab using Guid(da9681bf3ecea3042b6eb8cb5d95fe99) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 24 workers.
+ -> (artifact id: '3963e8e0b16fd150741b3b9718ebc381') in 0.005853 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.000277 seconds.
+  path: Assets/Resources/Monster.prefab
+  artifactKey: Guid(5ddbb946a49434849bfebbcfd0c1b089) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Monster.prefab using Guid(5ddbb946a49434849bfebbcfd0c1b089) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 24 workers.
+ -> (artifact id: '6df66ac4fd7b3dfc10097e7ec40a447c') in 0.001370 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0

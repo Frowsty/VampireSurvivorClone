@@ -3443,8 +3443,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 714077922}
   - {fileID: 1762662990}
+  - {fileID: 989355035}
   m_Father: {fileID: 278332015}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
@@ -4232,11 +4232,6 @@ Transform:
   - {fileID: 1752032673}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &714077922 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-  m_PrefabInstance: {fileID: 7110964466648009391}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &821759430
 GameObject:
   m_ObjectHideFlags: 0
@@ -4612,6 +4607,52 @@ Transform:
   - {fileID: 1277715640}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &989355034
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 989355035}
+  - component: {fileID: 989355036}
+  m_Layer: 0
+  m_Name: MonsterSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &989355035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989355034}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 519420032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &989355036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989355034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7960e635b11832847a687640076919f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  base_spawn_delay: 35
+  exp_ball_manager: {fileID: 1277715641}
 --- !u!1 &1056422082
 GameObject:
   m_ObjectHideFlags: 0
@@ -5286,9 +5327,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1353854377}
   m_Direction: 0
   m_MinValue: 30
-  m_MaxValue: 300
+  m_MaxValue: 500
   m_WholeNumbers: 1
-  m_Value: 100
+  m_Value: 300
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6366,6 +6407,7 @@ MonoBehaviour:
   score_text: {fileID: 2035024893}
   score_tex_value: {fileID: 637317483}
   exp_ball_manager: {fileID: 1277715641}
+  monster_spawner: {fileID: 989355036}
   game_started: 0
   current_health: 0
 --- !u!70 &1452905464
@@ -6691,7 +6733,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 300
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 34e32809d94819f49bf357fb59b5579d, type: 2}
   m_sharedMaterial: {fileID: 1056886467327630726, guid: 34e32809d94819f49bf357fb59b5579d, type: 2}
@@ -11564,79 +11606,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1001 &7110964466648009391
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 519420032}
-    m_Modifications:
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762180169302554093, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4631096329586958399, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_Name
-      value: MonsterSpawner
-      objectReference: {fileID: 0}
-    - target: {fileID: 4631096329586958399, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045984154746982485, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: boss_prefab
-      value: 
-      objectReference: {fileID: 3248787408636152404, guid: 413839bc4070a1e46b2d7d7a8c589fc4, type: 3}
-    - target: {fileID: 6045984154746982485, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: monster_prefab
-      value: 
-      objectReference: {fileID: 8978748717593909312, guid: 99a83c6fe644f6c43a19f90eea4ed4d4, type: 3}
-    - target: {fileID: 6045984154746982485, guid: 10b5406cb25369949b67038537db00f2, type: 3}
-      propertyPath: exp_ball_manager
-      value: 
-      objectReference: {fileID: 1277715641}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 10b5406cb25369949b67038537db00f2, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
