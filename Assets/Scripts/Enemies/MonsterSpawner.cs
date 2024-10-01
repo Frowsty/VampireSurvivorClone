@@ -78,7 +78,7 @@ public class MonsterSpawner : MonoBehaviour
     {
         Monster monster = Instantiate(strong_monster_prefab, pointOutsideScreen(), Quaternion.identity);
         
-        monster.setPool(boss_pool);
+        monster.setPool(strong_monster_pool);
 
         return monster;
     }

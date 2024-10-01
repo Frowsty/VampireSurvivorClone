@@ -164,8 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361d4654a29b84b429447239bd120ad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion_prefab: {fileID: 3084837067643468046, guid: c854a6714fe6c2d49b14fff12572aa18, type: 3}
-  powerup_prefab: {fileID: 5313618444079734624, guid: e63ffff619f17c945839a3e3b50ad124, type: 3}
+  health: 2000
   current_health: 0
   damage: 15
   experience: 75

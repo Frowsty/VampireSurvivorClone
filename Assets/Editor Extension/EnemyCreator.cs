@@ -62,6 +62,7 @@ public class EnemyCreator : EditorWindow
 
         GameObject new_enemy = new GameObject();
         new_enemy.tag = "Enemy";
+        new_enemy.layer = 6; //Enemies layer
         
         GameObject tag = PrefabUtility.LoadPrefabContents(path + "Enemy Tag.prefab");
         tag.transform.parent = new_enemy.transform;
@@ -78,17 +79,20 @@ public class EnemyCreator : EditorWindow
         new_enemy.AddComponent<MonsterMovement>();
         
         // set values for collider / rigidbody / spriterenderer
+        new_enemy.GetComponent<Rigidbody2D>().gravityScale = 0;
         new_enemy.GetComponent<CapsuleCollider2D>().size = new Vector2(0.35f, 0.43f); // hard-coded collider size cuz I'm pretty cool like that
         new_enemy.GetComponent<SpriteRenderer>().sprite = sprite;
         
         // set custom script values
-        new_enemy.GetComponent<Monster>().setHealth(max_health);
+        new_enemy.GetComponent<Monster>().setMaxHealth(max_health);
         new_enemy.GetComponent<Monster>().experience = experience;
         new_enemy.GetComponent<Monster>().damage = damage;
         new_enemy.GetComponent<MonsterMovement>().CONST_MOVE_SPEED = speed;
         
-        PrefabUtility.SaveAsPrefabAsset(new_enemy, path + enemy_categories[category_index] + ".prefab");
+        if(PrefabUtility.SaveAsPrefabAsset(new_enemy, path + enemy_categories[category_index] + ".prefab"))
+            Debug.Log(enemy_categories[category_index] + " prefab was successfully created");
         DestroyImmediate(new_enemy);
         DestroyImmediate(tag);
+        
     }
 }

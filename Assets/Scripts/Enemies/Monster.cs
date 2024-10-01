@@ -20,12 +20,11 @@ public class Monster : MonoBehaviour
     private ParticleSystem death_explosion;
     private Player player;
     private MonsterSpawner monster_spawner;
-
-    private int max_health = 0;
     
     /*
      * PUBLIC VARIABLES
      */
+    public int health;
     public int current_health = 0;
     public int damage = 3;
 
@@ -89,11 +88,11 @@ public class Monster : MonoBehaviour
         return damage;
     }
     
-    public void setHealth(int health) => current_health = max_health;
+    public void setHealth(int value) => current_health = value;
     
-    public void setMaxHealth(int health) => max_health = health;
+    public void setMaxHealth(int value) => health = value;
     
-    public int getMaxHealth() => max_health;
+    public int getMaxHealth() => health;
 
     public int getExp() => experience;
 }
