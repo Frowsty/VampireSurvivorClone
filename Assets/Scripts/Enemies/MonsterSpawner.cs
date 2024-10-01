@@ -7,11 +7,17 @@ using Random = UnityEngine.Random;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    [SerializeField] Monster monster_prefab;
-    [SerializeField] Monster boss_prefab;
-    public ExpBallManager exp_ball_manager;
-
-    private ObjectPool<Monster> object_pool;
+    /*
+     * PRIVATE VARIABLES
+     */
+    [SerializeField] float base_spawn_delay;
+    
+    private Monster monster_prefab;
+    private Monster strong_monster_prefab;
+    private Monster boss_prefab;
+    
+    private ObjectPool<Monster> monster_pool;
+    private ObjectPool<Monster> strong_monster_pool;
     private ObjectPool<Monster> boss_pool;
 
     private Player player;
@@ -23,19 +29,38 @@ public class MonsterSpawner : MonoBehaviour
     private float spawn_timer = 0f;
 
     private bool did_spawn = false;
+    
+    
+    /*
+     * PUBLIC VARIABLES
+     */
+    public ExpBallManager exp_ball_manager;
 
+    /*
+     * PRIVATE FUNCTIONS
+     */
     private void Awake()
     {
-        object_pool = new ObjectPool<Monster>(createMonster, onTakeMonster, onReturnMonster, onDestroyMonster, true, 200, 1500);
-        boss_pool = new ObjectPool<Monster>(createBoss, onTakeBoss, onReturnBoss, onDestroyBoss, true, 10, 100);
+        monster_prefab = Resources.Load<Monster>("Monster");
+        strong_monster_prefab = Resources.Load<Monster>("StrongMonster");
+        boss_prefab = Resources.Load<Monster>("Boss");
+        
+        if (!monster_prefab || !strong_monster_prefab || !boss_prefab)
+            Debug.Log("ERROR: Prefabs do not have a monster prefab!");
+        monster_pool = new ObjectPool<Monster>(createMonster, onTakeMonster, onReturnMonster, onDestroyMonster, true, 200, 1500);
+        boss_pool = new ObjectPool<Monster>(createBoss, onTakeBoss, onReturnMonster, onDestroyMonster, true, 10, 100);
+        strong_monster_pool = new ObjectPool<Monster>(createStrongMonster, onTakeStrongMonster, onReturnMonster, onDestroyMonster, true, 50, 500);
     }
+    
+    void Start() => player = GameObject.Find("Player").GetComponent<Player>();
+
+    void Update() => spawnMonsters();
     
     private Monster createBoss()
     {
         Monster monster = Instantiate(boss_prefab, pointOutsideScreen(), Quaternion.identity);
         
         monster.setPool(boss_pool);
-        monster.setBossState(true);
 
         return monster;
     }
@@ -44,19 +69,27 @@ public class MonsterSpawner : MonoBehaviour
     {
         monster.transform.position = pointOutsideScreen();
         monster.transform.rotation = Quaternion.identity;
-        monster.GetComponent<Monster>().setHealth(2000 + (player.getLevel() * 20));
+        monster.setHealth(monster.getMaxHealth() + (player.getLevel() * 20));
         
         monster.gameObject.SetActive(true);
     }
     
-    private void onReturnBoss(Monster monster)
+    private Monster createStrongMonster()
     {
-        monster.gameObject.SetActive(false);
+        Monster monster = Instantiate(strong_monster_prefab, pointOutsideScreen(), Quaternion.identity);
+        
+        monster.setPool(boss_pool);
+
+        return monster;
     }
 
-    private void onDestroyBoss(Monster monster)
+    private void onTakeStrongMonster(Monster monster)
     {
-        Destroy(monster.gameObject);
+        monster.transform.position = pointOutsideScreen();
+        monster.transform.rotation = Quaternion.identity;
+        monster.setHealth(monster.getMaxHealth() + (player.getLevel() * 20));
+        
+        monster.gameObject.SetActive(true);
     }
 
     private Monster createMonster()
@@ -64,7 +97,7 @@ public class MonsterSpawner : MonoBehaviour
         // create new instance
         Monster monster = Instantiate(monster_prefab, pointOutsideScreen(), Quaternion.identity);
         
-        monster.setPool(object_pool);
+        monster.setPool(monster_pool);
 
         return monster;
     }
@@ -73,32 +106,14 @@ public class MonsterSpawner : MonoBehaviour
     {
         monster.transform.position = pointOutsideScreen();
         monster.transform.rotation = Quaternion.identity;
-        monster.GetComponent<Monster>().setHealth(100 + (player.getLevel() * 10));
+        monster.setHealth(monster.getMaxHealth() + (player.getLevel() * 10));
         
         monster.gameObject.SetActive(true);
     }
 
-    private void onReturnMonster(Monster monster)
-    {
-        monster.gameObject.SetActive(false);
-    }
+    private void onReturnMonster(Monster monster) => monster.gameObject.SetActive(false);
 
-    private void onDestroyMonster(Monster monster)
-    {
-        Destroy(monster.gameObject);
-    }
-
-    void Start()
-    {
-        player = GameObject.Find("Player").GetComponent<Player>();
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        spawnMonsters();
-    }
+    private void onDestroyMonster(Monster monster) => Destroy(monster.gameObject);
     
     private Vector3 pointOutsideScreen()
     {
@@ -119,12 +134,14 @@ public class MonsterSpawner : MonoBehaviour
     {
         if (!player.game_started)
             return;
-        if (spawned_monsters < (max_spawn + (player.getLevel() * 10)) && !did_spawn)
+        if (spawned_monsters < max_spawn && !did_spawn)
         {
             if (Random.Range(0f, 100f) < 2.5f)
                 boss_pool.Get();
+            else if (Random.Range(0f, 100f) < 10f)
+                strong_monster_pool.Get();
             else
-                object_pool.Get();
+                monster_pool.Get();
             increaseSpawnedMonsters();
 
             spawn_timer = 0f;
@@ -139,9 +156,14 @@ public class MonsterSpawner : MonoBehaviour
             spawn_timer += Time.deltaTime;
     }
     
-    float get_spawn_time_limit() => (35f - player.getLevel()) > 5f ? 35f - player.getLevel() : 5f;
+    float get_spawn_time_limit() => (base_spawn_delay - player.getLevel()) > 5f ? base_spawn_delay - player.getLevel() : 5f;
     
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public void increaseSpawnedMonsters() => spawned_monsters += 1;
 
     public void decreaseSpawnedMonsters() => spawned_monsters -= 1;
+
+    public void updateMaxSpawn() => max_spawn = max_spawn + (player.getLevel() * 10);
 }

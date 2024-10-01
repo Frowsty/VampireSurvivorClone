@@ -5,39 +5,39 @@ using UnityEngine.Pool;
 
 public class ExpBallManager : MonoBehaviour
 {
-    [SerializeField] ExpBallMovement exp_ball;
-    ObjectPool<ExpBallMovement> exp_pool;
+    [SerializeField] ExpOrb exp_ball;
+    ObjectPool<ExpOrb> exp_pool;
     
     void Start()
     {
-        exp_pool = new ObjectPool<ExpBallMovement>(createExp, onTakeExp, onReturnExp, onDestroyExp, true, 200, 1500);
+        exp_pool = new ObjectPool<ExpOrb>(createExp, onTakeExp, onReturnExp, onDestroyExp, true, 200, 1500);
     }
     
-    private ExpBallMovement createExp()
+    private ExpOrb createExp()
     {
-        ExpBallMovement exp = Instantiate(exp_ball, transform.position, Quaternion.identity);
+        ExpOrb exp = Instantiate(exp_ball, transform.position, Quaternion.identity);
         return exp;
     }
 
-    private void onTakeExp(ExpBallMovement exp)
+    private void onTakeExp(ExpOrb exp)
     {
         exp.transform.rotation = Quaternion.identity;
         
         exp.gameObject.SetActive(true);
     }
     
-    private void onReturnExp(ExpBallMovement exp)
+    private void onReturnExp(ExpOrb exp)
     {
         exp.gameObject.SetActive(false);
         exp.resetTimer();
     }
 
-    private void onDestroyExp(ExpBallMovement exp)
+    private void onDestroyExp(ExpOrb exp)
     {
         Destroy(exp.gameObject);
     }
 
-    public ObjectPool<ExpBallMovement> getPool() => exp_pool;
+    public ObjectPool<ExpOrb> getPool() => exp_pool;
 
     // Update is called once per frame
     void Update()

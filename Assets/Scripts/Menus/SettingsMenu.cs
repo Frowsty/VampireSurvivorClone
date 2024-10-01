@@ -23,7 +23,7 @@ public class SettingsMenu : MonoBehaviour
     {
         updater = gameObject.GetComponent<Updater>();
         menu_controller = gameObject.GetComponent<MenuController>();
-        Application.targetFrameRate = 100;
+        Application.targetFrameRate = 300;
 
         prev_menu_state = menu_controller.getMenuState();
         

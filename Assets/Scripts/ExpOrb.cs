@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class ExpBallMovement : MonoBehaviour
+public class ExpOrb : MonoBehaviour
 {
     [SerializeField] Player player;
 
-    private ObjectPool<ExpBallMovement> pool;
+    private ObjectPool<ExpOrb> pool;
+
+    private int experience = 0;
 
     private float timer = 0f;
     // Start is called before the first frame update
@@ -30,7 +32,14 @@ public class ExpBallMovement : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * 5f);
     }
 
-    public void setPool(ObjectPool<ExpBallMovement> pool) => this.pool = pool;
+    public void setPool(ObjectPool<ExpOrb> pool) => this.pool = pool;
     
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public void resetTimer() => timer = 0f;
+    
+    public int getExp() => experience;
+
+    public void setExp(int exp) => experience = exp;
 }

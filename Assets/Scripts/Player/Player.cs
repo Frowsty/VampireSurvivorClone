@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject score_text;
     [SerializeField] TextMeshProUGUI score_tex_value;
     [SerializeField] ExpBallManager exp_ball_manager;
+    [SerializeField] MonsterSpawner monster_spawner;
 
     private Rigidbody2D rb;
     
@@ -144,13 +145,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void increaseExp(bool is_boss)
+    public void increaseExp(int amount)
     {
         if (experience >= 100 * player_level)
         {
             player_level++;
             exp_bar.setMaxExp(100 * player_level);
             level_text.GetComponent<TMPro.TextMeshProUGUI>().SetText(player_level.ToString());
+
+            monster_spawner.updateMaxSpawn();
             
             experience = 0;
             upgrade_points += 2;
@@ -177,9 +180,9 @@ public class Player : MonoBehaviour
             game_started = !game_started;
         }
         else
-            experience += is_boss ? 75 : 25;
+            experience += amount;
         
-        increaseScore(is_boss ? 75 : 25);
+        increaseScore(amount);
         updateScoreText();
         
         exp_bar.setExp(experience);
@@ -259,13 +262,8 @@ public class Player : MonoBehaviour
         }
         if (collision.CompareTag("ExpOrb"))
         {
-            increaseExp(false);
-            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpBallMovement>());
-        }
-        if (collision.CompareTag("ExpOrbBoss"))
-        {
-            increaseExp(true);
-            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpBallMovement>());
+            increaseExp(collision.gameObject.GetComponent<ExpOrb>().getExp());
+            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpOrb>());
         }
     }
 
@@ -281,13 +279,8 @@ public class Player : MonoBehaviour
         }
         if (collision.CompareTag("ExpOrb"))
         {
-            increaseExp(false);
-            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpBallMovement>());
-        }
-        if (collision.CompareTag("ExpOrbBoss"))
-        {
-            increaseExp(true);
-            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpBallMovement>());
+            increaseExp(collision.gameObject.GetComponent<ExpOrb>().getExp());
+            exp_ball_manager.getPool().Release(collision.gameObject.GetComponent<ExpOrb>());
         }
     }
 }
