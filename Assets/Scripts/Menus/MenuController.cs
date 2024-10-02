@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MenuController : MonoBehaviour
 {
-
-    [SerializeField] public GameObject play_menu;
-    [SerializeField] public GameObject death_menu;
+    /*
+     * PRIVATE VARIABLES
+     */
+    [SerializeField] GameObject play_menu;
+    [SerializeField] GameObject death_menu;
     [SerializeField] GameObject upgrade_menu;
     [SerializeField] GameObject settings_menu;
     [SerializeField] GameObject menu_light;
@@ -16,7 +18,13 @@ public class MenuController : MonoBehaviour
     private UpgradeMenu upgrade_menu_controller;
     private SettingsMenu settings_menu_controller;
     private Player player;
+
+    private MenuState menu_state = MenuState.PlayMenu;
+    private MenuState prev_menu_state = MenuState.PlayMenu;
     
+    /*
+     * PUBLIC VARIABLES
+     */
     public bool allow_bind = false;
     public bool show_menu = true;
     public enum MenuState
@@ -27,9 +35,9 @@ public class MenuController : MonoBehaviour
         SettingsMenu = 3
     }
 
-    private MenuState menu_state = MenuState.PlayMenu;
-    private MenuState prev_menu_state = MenuState.PlayMenu;
-    // Start is called before the first frame update
+    /*
+     * PRIVATE VARIABLES
+     */
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -47,7 +55,6 @@ public class MenuController : MonoBehaviour
         settings_menu.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!show_menu || player.game_started)
@@ -106,6 +113,9 @@ public class MenuController : MonoBehaviour
         menu_light.SetActive(true);
     }
 
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public void setMenuState(MenuState state)
     {
         prev_menu_state = menu_state;

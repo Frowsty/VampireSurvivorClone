@@ -7,6 +7,9 @@ using UnityEngine.Pool;
 
 public class Bullet : MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] DamagePopup damage_prefab;
     [SerializeField] Sprite[] bullet_sprites;
     
@@ -22,8 +25,15 @@ public class Bullet : MonoBehaviour
 
     private ObjectPool<Bullet> bullet_pool;
 
+    /*
+     * PUBLIC VARIABLES
+     */
     public bool is_disabled = false;
 
+    
+    /*
+     * PRIVATE FUNCTIONS
+     */
     private void Awake()
     {
         weapon = GameObject.Find("Weapon").GetComponent<Weapon>();
@@ -32,13 +42,6 @@ public class Bullet : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (!player.game_started)
@@ -59,6 +62,9 @@ public class Bullet : MonoBehaviour
         travel_time += Time.deltaTime;
     }
     
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public void setPool(ObjectPool<Bullet> pool) => bullet_pool = pool;
 
     public void updateSprite()
@@ -73,6 +79,9 @@ public class Bullet : MonoBehaviour
             sr.sprite = bullet_sprites[2];
     }
 
+    /*
+     * COLLISION CALLBACKS
+     */
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy") && player.game_started && !is_disabled)
@@ -82,7 +91,7 @@ public class Bullet : MonoBehaviour
                 int damage = weapon.getDamage();
                 collision.GetComponent<Monster>().takeDamage(damage);
                 DamagePopup damage_popup = Instantiate(damage_prefab, new Vector3(collision.gameObject.transform.position.x - 0.5f,
-                                                                                 collision.gameObject.transform.position.y - 0.25f, 0),
+                                                                                 collision.gameObject.transform.position.y - 0.25f, -3),
                                                                                  Quaternion.identity);
                 damage_popup.Setup(damage);
             }

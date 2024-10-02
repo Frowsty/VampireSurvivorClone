@@ -15,7 +15,6 @@ public class Monster : MonoBehaviour
      */
     private ParticleSystem explosion_prefab;
     private GameObject powerup_prefab;
-    
     private ObjectPool<Monster> monster_pool;
     private ParticleSystem death_explosion;
     private Player player;
@@ -27,7 +26,6 @@ public class Monster : MonoBehaviour
     public int health;
     public int current_health = 0;
     public int damage = 3;
-
     public int experience = 0;
 
     

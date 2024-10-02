@@ -23,7 +23,6 @@ public class MonsterMovement : MonoBehaviour
     /*
      * PUBLIC VARIABLES
      */
-    
     public float CONST_MOVE_SPEED = 0.75f;
 
     

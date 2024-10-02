@@ -30,7 +30,6 @@ public class MonsterSpawner : MonoBehaviour
 
     private bool did_spawn = false;
     
-    
     /*
      * PUBLIC VARIABLES
      */

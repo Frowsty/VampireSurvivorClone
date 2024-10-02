@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class UpgradeMenu : MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] GameObject upgrade_menu_controller;
     [SerializeField] TMPro.TextMeshProUGUI points_text;
 
@@ -13,13 +16,18 @@ public class UpgradeMenu : MonoBehaviour
     private int fire_rate = 0;
     private int damage = 0;
     private int health_regen = 0;
-    // Start is called before the first frame update
+    
+    /*
+     * PRIVATE FUNCTIONS
+     */
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
-    // Update is called once per frame
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public void UpdateMenu()
     {
         player.setAttractionPoints(attraction);

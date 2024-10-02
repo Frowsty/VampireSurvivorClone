@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] GameObject back_button;
     [SerializeField] GameObject fps_controller;
     [SerializeField] Toggle fps_toggle;
@@ -18,7 +21,9 @@ public class SettingsMenu : MonoBehaviour
 
     private bool show_fps = false;
     
-    // Start is called before the first frame update
+    /*
+     * PRIVATE FUNCTIONS
+     */
     void Start()
     {
         updater = gameObject.GetComponent<Updater>();
@@ -50,7 +55,9 @@ public class SettingsMenu : MonoBehaviour
         });
     }
 
-    // Update is called once per frame
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public void UpdateMenu()
     {
         

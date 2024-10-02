@@ -8,20 +8,9 @@ using Random = UnityEngine.Random;
 
 public class Weapon : MonoBehaviour
 {
-    public enum WeaponType
-    {
-        PISTOL = 0,
-        RIFLE,
-        MACHINE_GUN
-    }
-
-    public enum PowerUp
-    {
-        NONE = 0,
-        TRI_SHOT,
-        LAZER_BEAM
-    }
-
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] Bullet bullet_prefab;
     [SerializeField] Player player;
     
@@ -36,7 +25,27 @@ public class Weapon : MonoBehaviour
     private float fire_rate = 0.25f;
     private float powerup_timer = 0;
     private float powerup_duration = 30f;
+ 
+    /*
+     * PUBLIC VARIABLES
+     */
+    public enum WeaponType
+    {
+        PISTOL = 0,
+        RIFLE,
+        MACHINE_GUN
+    }
+
+    public enum PowerUp
+    {
+        NONE = 0,
+        TRI_SHOT,
+        LAZER_BEAM
+    }
     
+    /*
+     * PRIVATE FUNCTIONS
+     */
     private Bullet createBullet()
     {
         // create new instance
@@ -119,6 +128,9 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public void resetWeaponState()
     {
         if (player.current_health <= 0 && !player.game_started)

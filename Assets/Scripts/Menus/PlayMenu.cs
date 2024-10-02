@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayMenu : MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] GameObject main_menu_controller;
     [SerializeField] GameObject panel;
     
@@ -16,7 +19,9 @@ public class PlayMenu : MonoBehaviour
 
     private float original_position;
     
-    // Start is called before the first frame update
+    /*
+     * PRIVATE FUNCTIONS
+     */
     void Start()
     {
         menu_controller = gameObject.GetComponent<MenuController>();
@@ -27,12 +32,6 @@ public class PlayMenu : MonoBehaviour
         resetPositions();
     }
 
-    // Update is called once per frame
-    public void UpdateMenu()
-    {
-        panel.transform.position = new Vector3(panel.transform.position.x, verticalMove(panel.transform.position.y, original_position), panel.transform.position.z);
-    }
-
     private float verticalMove(float current_y, float original_y)
     {
         if (original_y - current_y > 1)
@@ -41,6 +40,14 @@ public class PlayMenu : MonoBehaviour
             return original_y;
 
         return current_y;
+    }
+    
+    /*
+     * PUBLIC FUNCTIONS
+     */
+    public void UpdateMenu()
+    {
+        panel.transform.position = new Vector3(panel.transform.position.x, verticalMove(panel.transform.position.y, original_position), panel.transform.position.z);
     }
 
     public void startGame()

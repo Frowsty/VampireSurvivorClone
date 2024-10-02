@@ -8,6 +8,9 @@ using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] MenuController menu_controller;
     [SerializeField] Healthbar health_bar;
     [SerializeField] Expbar exp_bar;
@@ -23,12 +26,9 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D rb;
     
-    public bool game_started = false;
     private int max_health = 100;
-    public int current_health;
-    
-    
-    private float move_speed = 1.5f;
+
+    private float move_speed = 2f;
     private Vector2 next_position = Vector2.zero;
     
     private int player_level = 1;
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     private int experience = 0;
     private float attraction_distance = 0f;
 
-    private int upgrade_points = 100;
+    private int upgrade_points = 0;
     private int attraction_points = 0;
     private int fire_rate_points = 0;
     private int damage_points = 0;
@@ -48,7 +48,15 @@ public class Player : MonoBehaviour
 
     private int score = 0;
 
-    // Start is called before the first frame update
+    /*
+     * PUBLIC VARIABLES
+     */  
+    public bool game_started = false;
+    public int current_health;
+    
+    /*
+     * PRIVATE FUNCTIONS
+     */
     void Start()
     {
         current_health = max_health;
@@ -130,7 +138,13 @@ public class Player : MonoBehaviour
         
         rb.MovePosition(Vector2.MoveTowards(rb.position, next_position, move_speed * Time.deltaTime));
     }
+    
+    private void giveRandomUpgrade() => GameObject.Find("Weapon").GetComponent<Weapon>().setPowerUp(Random.Range((int)1, (int)3));
 
+
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public void regen_health()
     {
         if (current_health == max_health || regen_points == 0)
@@ -222,9 +236,6 @@ public class Player : MonoBehaviour
     }
 
     public void incrementUpgradePoints() => upgrade_points++;
-    
-    private void giveRandomUpgrade() => GameObject.Find("Weapon").GetComponent<Weapon>().setPowerUp(Random.Range((int)1, (int)3));
-    
 
     public void disableLights()
     {
@@ -248,6 +259,9 @@ public class Player : MonoBehaviour
     
     public void resetScoreText() => score_tex_value.SetText("");
     
+    /*
+     * COLLISION CALLBACKS
+     */
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (!game_started)

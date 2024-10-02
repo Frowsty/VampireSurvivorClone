@@ -6,20 +6,20 @@ using UnityEngine.UI;
 
 public class SliderValue : MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] Slider slider;
     [SerializeField] TextMeshProUGUI value;
     
-    // Start is called before the first frame update
+    /*
+     * PRIVATE FUNCTIONS
+     */
     void Start()
     {
         slider.onValueChanged.AddListener(delegate
         {
             value.text = slider.value.ToString();
         });
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }

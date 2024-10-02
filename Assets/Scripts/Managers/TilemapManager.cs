@@ -6,6 +6,9 @@ using UnityEngine.Tilemaps;
 
 public class TilemapManager : MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] GameObject tileset_parent;
     [SerializeField] GameObject tileset;
     [SerializeField] Player player;
@@ -15,6 +18,9 @@ public class TilemapManager : MonoBehaviour
     private float tile_size = 3.84f;
     private Vector2Int grid_size = new Vector2Int(11, 7);
     
+    /*
+     * PRIVATE FUNCTIONS
+     */
     void Start()
     {
         for (int i = 10; i > -1; i--)
@@ -27,7 +33,6 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         foreach (var tile in tiles)

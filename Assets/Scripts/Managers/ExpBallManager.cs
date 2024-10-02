@@ -5,9 +5,15 @@ using UnityEngine.Pool;
 
 public class ExpBallManager : MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] ExpOrb exp_ball;
     ObjectPool<ExpOrb> exp_pool;
     
+    /*
+     * PRIVATE FUNCTIONS
+     */
     void Start()
     {
         exp_pool = new ObjectPool<ExpOrb>(createExp, onTakeExp, onReturnExp, onDestroyExp, true, 200, 1500);
@@ -37,11 +43,8 @@ public class ExpBallManager : MonoBehaviour
         Destroy(exp.gameObject);
     }
 
+    /*
+     * PUBLIC FUNCTIONS
+     */
     public ObjectPool<ExpOrb> getPool() => exp_pool;
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

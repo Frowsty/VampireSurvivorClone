@@ -8,6 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class DeathMenu: MonoBehaviour
 {
+    /*
+     * PRIVATE VARIABLES
+     */
     [SerializeField] GameObject death_menu_controller;
     [SerializeField] GameObject panel;
     [SerializeField] TextMeshProUGUI score_text;
@@ -19,7 +22,9 @@ public class DeathMenu: MonoBehaviour
     private float original_position;
     
     
-    // Start is called before the first frame update
+    /*
+     * PRIVATE FUNCTIONS
+     */
     void Start()
     {
         menu_controller = gameObject.GetComponent<MenuController>();
@@ -27,17 +32,7 @@ public class DeathMenu: MonoBehaviour
   
         original_position = panel.transform.position.y;
     }
-
-    // Update is called once per frame
-    public void UpdateMenu()
-    {
-        // y position is being animated
-        panel.transform.position = new Vector3(panel.transform.position.x, verticalMove(panel.transform.position.y, original_position), panel.transform.position.z);
-
-        score_text.SetText(player.getScore().ToString());
-        highscore_text.SetText(PlayerPrefs.GetInt("highscore").ToString());
-    }
-
+    
     private float verticalMove(float current_y, float original_y)
     {
         if (original_y - current_y > 1)
@@ -46,6 +41,18 @@ public class DeathMenu: MonoBehaviour
             return original_y;
 
         return current_y;
+    }
+
+    /*
+     * PUBLIC FUNCTIONS
+     */
+    public void UpdateMenu()
+    {
+        // y position is being animated
+        panel.transform.position = new Vector3(panel.transform.position.x, verticalMove(panel.transform.position.y, original_position), panel.transform.position.z);
+
+        score_text.SetText(player.getScore().ToString());
+        highscore_text.SetText(PlayerPrefs.GetInt("highscore").ToString());
     }
 
     public void mainMenu() => SceneManager.LoadScene(0);
