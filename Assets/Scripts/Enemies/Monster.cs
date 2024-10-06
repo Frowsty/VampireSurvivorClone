@@ -58,7 +58,7 @@ public class Monster : MonoBehaviour
         GetComponent<MonsterMovement>().resetStates();
         
         if (Random.Range(0f, 100f) < 0.5f) // 0.5% chance to spawn a powerup drop
-            Instantiate(powerup_prefab, transform.position, Quaternion.identity);
+            Instantiate(powerup_prefab, new Vector3(transform.position.x, transform.position.y, -1), Quaternion.identity);
 
         ExpOrb exp_orb = monster_spawner.exp_ball_manager.getPool().Get();
         exp_orb.transform.position = new Vector3(transform.position.x, transform.position.y, -1);

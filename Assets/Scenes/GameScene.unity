@@ -3460,10 +3460,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1452905462}
-  interp_velocity: 0
-  min_distance: 0
-  follow_distance: 0
-  offset: {x: 0, y: 0, z: 0}
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0

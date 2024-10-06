@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Player\DamagePopup.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraMovement.cs" />
+    <Compile Include="Assets\Scripts\Player\CustomPowerUpInfo.cs" />
     <Compile Include="Assets\Scripts\Player\Bullet.cs" />
     <Compile Include="Assets\Scripts\Managers\ExpBallManager.cs" />
     <Compile Include="Assets\Scripts\Player\Weapon.cs" />
@@ -56,13 +57,13 @@
     <Compile Include="Assets\Scripts\Menus\DeathMenu.cs" />
     <Compile Include="Assets\Scripts\Enemies\Monster.cs" />
     <Compile Include="Assets\Scripts\Menus\SettingsMenu.cs" />
-    <Compile Include="Assets\Editor Extension\EnemyCreator.cs" />
     <Compile Include="Assets\Scripts\Menus\SliderValue.cs" />
     <Compile Include="Assets\Scripts\Updater.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Enemies\MonsterMovement.cs" />
     <Compile Include="Assets\Scripts\Menus\UpgradeMenu.cs" />
     <Compile Include="Assets\Scripts\Player\Healthbar.cs" />
+    <Compile Include="Assets\Editor Extension\CreatorTool.cs" />
     <Compile Include="Assets\Scripts\Managers\TilemapManager.cs" />
     <Compile Include="Assets\Scripts\Menus\MenuController.cs" />
     <Compile Include="Assets\Scripts\Player\ExpBar.cs" />

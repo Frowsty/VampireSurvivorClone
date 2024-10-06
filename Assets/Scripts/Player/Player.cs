@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
         rb.MovePosition(Vector2.MoveTowards(rb.position, next_position, move_speed * Time.deltaTime));
     }
     
-    private void giveRandomUpgrade() => GameObject.Find("Weapon").GetComponent<Weapon>().setPowerUp(Random.Range((int)1, (int)3));
+    private void giveRandomUpgrade() => GameObject.Find("Weapon").GetComponent<Weapon>().setPowerUp(Random.Range((int)1, (int)4));
 
 
     /*
@@ -161,6 +161,8 @@ public class Player : MonoBehaviour
 
     public void increaseExp(int amount)
     {
+        experience += amount;
+        
         if (experience >= 100 * player_level)
         {
             player_level++;
@@ -193,8 +195,6 @@ public class Player : MonoBehaviour
             menu_controller.setMenuState(MenuController.MenuState.UpgradeMenu);
             game_started = !game_started;
         }
-        else
-            experience += amount;
         
         increaseScore(amount);
         updateScoreText();
