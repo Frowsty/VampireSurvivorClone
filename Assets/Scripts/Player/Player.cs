@@ -206,7 +206,7 @@ public class Player : MonoBehaviour
     public void resetUpdateFireRate() => update_fire_rate = false;
     public bool checkFireRateUpdate() => update_fire_rate;
     
-    public float getAttractionDistance() => attraction_distance + (attraction_points * 0.1f);
+    public float getAttractionDistance() => attraction_distance + (attraction_points * 0.2f);
     public void setAttractionPoints(int points) => attraction_points = points;
 
     public int getFireRatePoints() => fire_rate_points;

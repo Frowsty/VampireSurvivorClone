@@ -1,10 +1,10 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine.Rendering.Universal;
 
 public class CreatorTool : EditorWindow
@@ -146,3 +146,4 @@ public class CreatorTool : EditorWindow
         
     }
 }
+#endif
