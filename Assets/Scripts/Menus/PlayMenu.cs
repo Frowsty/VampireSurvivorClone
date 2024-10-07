@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,7 @@ public class PlayMenu : MonoBehaviour
      */
     [SerializeField] GameObject main_menu_controller;
     [SerializeField] GameObject panel;
+    [SerializeField] TextMeshProUGUI highscore_text;
     
     private MenuController menu_controller;
 
@@ -48,6 +50,7 @@ public class PlayMenu : MonoBehaviour
     public void UpdateMenu()
     {
         panel.transform.position = new Vector3(panel.transform.position.x, verticalMove(panel.transform.position.y, original_position), panel.transform.position.z);
+        highscore_text.SetText(PlayerPrefs.GetInt("highscore").ToString());
     }
 
     public void startGame()
