@@ -14,12 +14,15 @@ public class Bullet : MonoBehaviour
     [SerializeField] Sprite[] bullet_sprites;
     
     private Weapon weapon;
-    private Player player;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     
     private float bullet_speed = 6.0f;
     private float travel_time;
+    private float target_angle = 0f;
+    private bool has_magnetism = false;
+    private float magnetism = 10f;
+    private float placeholder = 0f;
 
     private Vector3 target_pos;
 
@@ -29,7 +32,7 @@ public class Bullet : MonoBehaviour
      * PUBLIC VARIABLES
      */
     public bool is_disabled = false;
-
+    public Player player;
     
     /*
      * PRIVATE FUNCTIONS
@@ -54,7 +57,14 @@ public class Bullet : MonoBehaviour
         {
             bullet_pool.Release(this);
             travel_time = 0;
+            target_angle = 0f;
             return;
+        }
+
+        if (target_angle != 0 && has_magnetism)
+        {
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.z, target_angle, ref placeholder, magnetism);
+            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
 
         rb.velocity = transform.right * bullet_speed;
@@ -66,6 +76,16 @@ public class Bullet : MonoBehaviour
      * PUBLIC FUNCTIONS
      */
     public void setPool(ObjectPool<Bullet> pool) => bullet_pool = pool;
+    
+    public void disableMagnetism() => has_magnetism = false;
+    
+    public void enableMagnetism() => has_magnetism = true;
+
+    public void setFinalAngle(float angle) => target_angle = angle;
+    
+    public float getFinalAngle() => target_angle;
+    
+    public void setMagnetism(float mag) => magnetism = 1f - mag;
 
     public void updateSprite()
     {
@@ -99,6 +119,7 @@ public class Bullet : MonoBehaviour
             is_disabled = true;
             bullet_pool.Release(this);
             travel_time = 0;
+            target_angle = 0;
         }
     }
 }

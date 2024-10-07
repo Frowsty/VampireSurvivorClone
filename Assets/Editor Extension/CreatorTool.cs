@@ -10,6 +10,7 @@ using UnityEngine.Rendering.Universal;
 public class CreatorTool : EditorWindow
 {
     private string path = "Assets/Resources/";
+    private string path_powerup = "Assets/Resources/CustomPowerUp/";
     private int category_index = 0;
     private GameObject prefab;
 
@@ -22,9 +23,11 @@ public class CreatorTool : EditorWindow
     private Sprite sprite;
     private Color tag_color = Color.red;
 
+    private string powerup_name = "";
     private int bullets_per_shot = 1;
     private float bullet_angle_change = 0;
     private float fire_rate = 0.5f;
+    private float magnetism = 0f;
 
     private string[] enemy_categories = {"Monster", "StrongMonster", "Boss"};
     
@@ -69,23 +72,24 @@ public class CreatorTool : EditorWindow
             title_style.fontStyle = FontStyle.Bold;
             title_style.padding.top = 15;
             GUILayout.Label("Create new powerup", title_style);
-            
-            bullets_per_shot = EditorGUI.IntSlider(new Rect(new Vector2(10, 40), new Vector2(300, 20)), "Bullets per shot", bullets_per_shot, 1, 365);
-            bullet_angle_change = EditorGUI.Slider(new Rect(new Vector2(10, 60), new Vector2(300, 20)), "Bullet angle change", bullet_angle_change, 0f, 35f);
-            fire_rate = EditorGUI.Slider(new Rect(new Vector2(10, 80), new Vector2(300, 20)), "Fire Rate", fire_rate, 0f, 2f);
 
-            if (GUI.Button(new Rect(new Vector2(10, 100), new Vector2(300, 20)), "Create Powerup"))
+            powerup_name = EditorGUI.TextField(new Rect(new Vector2(10, 40), new Vector2(300, 20)), "Powerup Name", powerup_name);
+            bullets_per_shot = EditorGUI.IntSlider(new Rect(new Vector2(10, 60), new Vector2(300, 20)), "Bullets per shot", bullets_per_shot, 1, 365);
+            bullet_angle_change = EditorGUI.Slider(new Rect(new Vector2(10, 80), new Vector2(300, 20)), "Bullet angle change", bullet_angle_change, 0f, 35f);
+            fire_rate = EditorGUI.Slider(new Rect(new Vector2(10, 100), new Vector2(300, 20)), "Fire Rate", fire_rate, 0f, 2f);
+            magnetism = EditorGUI.Slider(new Rect(new Vector2(10, 120), new Vector2(300, 20)), "Magnetism", magnetism, 0f, 1f);
+
+            if (GUI.Button(new Rect(new Vector2(10, 140), new Vector2(300, 20)), "Create Powerup"))
                 createPowerup();
         }
-        // throw new NotImplementedException();
     }
 
     private void createPowerup()
     {
-        if (AssetDatabase.DeleteAsset(path + "CustomPowerUp.prefab"))
+        if (AssetDatabase.DeleteAsset(path_powerup + powerup_name + ".prefab"))
         {
             Debug.Log("Deleted already existing CustomPowerUp prefab");
-            AssetDatabase.DeleteAsset(path + "CustomPowerUp.prefab.meta");
+            AssetDatabase.DeleteAsset(path_powerup + powerup_name + ".prefab");
         }
 
         GameObject new_powerup = new GameObject();
@@ -96,8 +100,9 @@ public class CreatorTool : EditorWindow
         new_powerup.GetComponent<CustomPowerUpInfo>().bullet_count = bullets_per_shot;
         new_powerup.GetComponent<CustomPowerUpInfo>().bullet_rotation = bullet_angle_change;
         new_powerup.GetComponent<CustomPowerUpInfo>().fire_rate = fire_rate;
+        new_powerup.GetComponent<CustomPowerUpInfo>().magnetism = magnetism;
         
-        if(PrefabUtility.SaveAsPrefabAsset(new_powerup, path + "CustomPowerUp.prefab"))
+        if(PrefabUtility.SaveAsPrefabAsset(new_powerup, path_powerup + powerup_name + ".prefab"))
             Debug.Log("CustomPowerUp prefab was successfully created");
         DestroyImmediate(new_powerup);
     }

@@ -13,6 +13,7 @@ TagManager:
   - ExpOrbBoss
   - FPSValue
   - ShowFPS
+  - MagneticField
   layers:
   - Default
   - TransparentFX

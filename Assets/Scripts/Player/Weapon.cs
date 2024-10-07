@@ -15,7 +15,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] Player player;
     
     private ObjectPool<Bullet> bullet_pool;
-    private CustomPowerUpInfo powerup_info;
+    private CustomPowerUpInfo[] powerup_info;
 
     private WeaponType current_weapon;
     private PowerUp current_powerup;
@@ -26,6 +26,7 @@ public class Weapon : MonoBehaviour
     private float fire_rate = 0.25f;
     private float powerup_timer = 0;
     private float powerup_duration = 30f;
+    private int custom_powerup_index = 0;
     
     // used for bullet z rotation offset
     private Vector3 rot;
@@ -67,6 +68,7 @@ public class Weapon : MonoBehaviour
         bullet.transform.position = new Vector3(transform.position.x, transform.position.y, -3); // -3 since bullets should be ontop of everything
         bullet.transform.rotation = transform.rotation;
         bullet.is_disabled = false;
+        bullet.disableMagnetism();
         
         bullet.updateSprite();
         bullet.gameObject.SetActive(true);
@@ -84,9 +86,14 @@ public class Weapon : MonoBehaviour
     
     void Start()
     {
-        powerup_info = Resources.Load<CustomPowerUpInfo>("CustomPowerUp");
-        if (!powerup_info)
-            Debug.LogError("powerup_info not loaded");
+        powerup_info = Resources.LoadAll<CustomPowerUpInfo>("CustomPowerUp/");
+        //powerup_info = Resources.Load<CustomPowerUpInfo>("CustomPowerUp");
+        if (!powerup_info[0])
+            Debug.LogError("powerup_info not loaded (first object missing)");
+        
+        foreach (CustomPowerUpInfo info in powerup_info)
+            Debug.Log(info.gameObject.name);
+        
         bullet_pool = new ObjectPool<Bullet>(createBullet, onTakeBullet, onReturnBullet, onDestroyBullet, true, 1000, 3000);
         time_since_shot = Time.time;
         current_weapon = WeaponType.PISTOL;
@@ -133,14 +140,20 @@ public class Weapon : MonoBehaviour
                     break;
                 case PowerUp.CUSTOM:
                     rot = transform.rotation.eulerAngles;
-                    rot.z -= (powerup_info.bullet_count % 2 == 0 ? powerup_info.bullet_count / 2 : (powerup_info.bullet_count - 1) / 2) * powerup_info.bullet_rotation;
-                    for (int i = 0; i < powerup_info.bullet_count; i++)
+                    rot.z -= (powerup_info[custom_powerup_index].bullet_count % 2 == 0 ? powerup_info[custom_powerup_index].bullet_count / 2 : (powerup_info[custom_powerup_index].bullet_count - 1) / 2) * powerup_info[custom_powerup_index].bullet_rotation;
+                    for (int i = 0; i < powerup_info[custom_powerup_index].bullet_count; i++)
                     {
                         temp = bullet_pool.Get();
+                        if (powerup_info[custom_powerup_index].magnetism > 0)
+                        {
+                            temp.enableMagnetism();
+                            temp.setMagnetism(powerup_info[custom_powerup_index].magnetism);
+                        }
+
                         if (temp)
                             temp.transform.rotation = Quaternion.Euler(rot.x, rot.y, rot.z);
 
-                        rot.z += powerup_info.bullet_rotation;
+                        rot.z += powerup_info[custom_powerup_index].bullet_rotation;
                     }
                     break;
             }
@@ -166,13 +179,14 @@ public class Weapon : MonoBehaviour
     {
         powerup_timer = Time.time;
         current_powerup = (PowerUp)power_up;
+        custom_powerup_index = Random.Range((int)0, (int)powerup_info.Length); // int range will give a number from min to max (not including max hence why we don't need to worry about out of bounds with .Length here
 
         if (current_powerup == PowerUp.NONE || current_powerup == PowerUp.TRI_SHOT)
             fire_rate = getWeaponFireRate();
         else if (current_powerup == PowerUp.LAZER_BEAM)
             fire_rate = 0.0f;
         else if (current_powerup == PowerUp.CUSTOM)
-            fire_rate = powerup_info.fire_rate;
+            fire_rate = powerup_info[custom_powerup_index].fire_rate;
     }
     
     public float getWeaponFireRate()

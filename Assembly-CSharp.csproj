@@ -57,6 +57,7 @@
     <Compile Include="Assets\Scripts\Menus\DeathMenu.cs" />
     <Compile Include="Assets\Scripts\Enemies\Monster.cs" />
     <Compile Include="Assets\Scripts\Menus\SettingsMenu.cs" />
+    <Compile Include="Assets\Scripts\Player\MagneticField.cs" />
     <Compile Include="Assets\Scripts\Menus\SliderValue.cs" />
     <Compile Include="Assets\Scripts\Updater.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
